@@ -212,8 +212,8 @@ namespace System.Windows.Forms
                         -1,
                         -1,
                         out RECT calendarBodyRectangle,
-                        out SYSTEMTIME endDate,
-                        out SYSTEMTIME startDate);
+                        out Kernel32.SYSTEMTIME endDate,
+                        out Kernel32.SYSTEMTIME startDate);
 
                     int columnCount = 0;
                     bool success = true;
@@ -253,8 +253,8 @@ namespace System.Windows.Forms
                         -1,
                         -1,
                         out RECT calendarBodyRectangle,
-                        out SYSTEMTIME endDate,
-                        out SYSTEMTIME startDate);
+                        out Kernel32.SYSTEMTIME endDate,
+                        out Kernel32.SYSTEMTIME startDate);
 
                     int rowCount = 0;
                     bool success = true;
@@ -344,7 +344,7 @@ namespace System.Windows.Forms
                 ComCtl32.MCHITTESTINFO hitTestInfo = new ComCtl32.MCHITTESTINFO();
                 hitTestInfo.cbSize = (int)Marshal.SizeOf(hitTestInfo);
                 hitTestInfo.pt = new POINT();
-                hitTestInfo.st = new SYSTEMTIME();
+                hitTestInfo.st = new Kernel32.SYSTEMTIME();
 
                 // NativeMethods.GetCursorPos(out Point pt);
                 Point point = new Point(xScreen, yScreen);
@@ -401,8 +401,8 @@ namespace System.Windows.Forms
                     rowIndex,
                     columnIndex,
                     out RECT rectangle,
-                    out SYSTEMTIME systemEndDate,
-                    out SYSTEMTIME systemStartDate);
+                    out Kernel32.SYSTEMTIME systemEndDate,
+                    out Kernel32.SYSTEMTIME systemStartDate);
 
                 DateTime endDate = DateTimePicker.SysTimeToDateTime(systemEndDate).Date;
                 DateTime startDate = DateTimePicker.SysTimeToDateTime(systemStartDate).Date;
@@ -453,8 +453,8 @@ namespace System.Windows.Forms
                     rowIndex,
                     0,
                     out RECT calendarPartRectangle,
-                    out SYSTEMTIME endDate,
-                    out SYSTEMTIME startDate);
+                    out Kernel32.SYSTEMTIME endDate,
+                    out Kernel32.SYSTEMTIME startDate);
 
                 if (!success)
                 {
@@ -480,8 +480,8 @@ namespace System.Windows.Forms
                 int row,
                 int column,
                 out RECT rectangle,
-                out SYSTEMTIME endDate,
-                out SYSTEMTIME startDate)
+                out Kernel32.SYSTEMTIME endDate,
+                out Kernel32.SYSTEMTIME startDate)
             {
                 Debug.Assert(
                     (dwFlags & ~(ComCtl32.MCGIF.DATE | ComCtl32.MCGIF.RECT)) == 0,
@@ -507,8 +507,8 @@ namespace System.Windows.Forms
                 catch
                 {
                     rectangle = new RECT();
-                    endDate = new SYSTEMTIME();
-                    startDate = new SYSTEMTIME();
+                    endDate = new Kernel32.SYSTEMTIME();
+                    startDate = new Kernel32.SYSTEMTIME();
                     result = false;
                 }
 
@@ -568,7 +568,7 @@ namespace System.Windows.Forms
                     row,
                     column,
                     out calendarPartRectangle,
-                    out SYSTEMTIME endDate, out SYSTEMTIME startDate);
+                    out Kernel32.SYSTEMTIME endDate, out Kernel32.SYSTEMTIME startDate);
 
                 if (success)
                 {
@@ -641,8 +641,8 @@ namespace System.Windows.Forms
                             row,
                             column,
                             out RECT calendarPartRectangle,
-                            out SYSTEMTIME systemEndDate,
-                            out SYSTEMTIME systemStartDate);
+                            out Kernel32.SYSTEMTIME systemEndDate,
+                            out Kernel32.SYSTEMTIME systemStartDate);
 
                         if (!success)
                         {

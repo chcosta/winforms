@@ -408,7 +408,7 @@ namespace System.Windows.Forms
                 // the information from win32 DateTimePicker is reliable only when ShowCheckBoxes is True
                 if (ShowCheckBox && IsHandleCreated)
                 {
-                    SYSTEMTIME sys = new SYSTEMTIME();
+                    Kernel32.SYSTEMTIME sys = new Kernel32.SYSTEMTIME();
                     int gdt = (int)UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_GETSYSTEMTIME, 0, sys);
                     return gdt == NativeMethods.GDT_VALID;
                 }
@@ -427,14 +427,13 @@ namespace System.Windows.Forms
                         if (value)
                         {
                             int gdt = NativeMethods.GDT_VALID;
-                            SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(Value);
+                            Kernel32.SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(Value);
                             UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_SETSYSTEMTIME, gdt, sys);
                         }
                         else
                         {
                             int gdt = NativeMethods.GDT_NONE;
-                            SYSTEMTIME sys = null;
-                            UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_SETSYSTEMTIME, gdt, sys);
+                            UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_SETSYSTEMTIME, gdt, IntPtr.Zero);
                         }
                     }
                     // this.validTime is used when the DateTimePicker receives date time change notification
@@ -1054,7 +1053,7 @@ namespace System.Windows.Forms
                         * get propagated to createHandle
                         */
                         int gdt = NativeMethods.GDT_VALID;
-                        SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(value);
+                        Kernel32.SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(value);
                         UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_SETSYSTEMTIME, gdt, sys);
                     }
 
@@ -1151,14 +1150,13 @@ namespace System.Windows.Forms
                 * get propagated to setValue
                 */
                 int gdt = NativeMethods.GDT_VALID;
-                SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(Value);
+                Kernel32.SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(Value);
                 UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_SETSYSTEMTIME, gdt, sys);
             }
             else if (!validTime)
             {
                 int gdt = NativeMethods.GDT_NONE;
-                SYSTEMTIME sys = null;
-                UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_SETSYSTEMTIME, gdt, sys);
+                UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_SETSYSTEMTIME, gdt, IntPtr.Zero);
             }
 
             if (format == DateTimePickerFormat.Custom)
@@ -1386,7 +1384,7 @@ namespace System.Windows.Forms
             if (IsHandleCreated)
             {
                 int gdt = NativeMethods.GDT_VALID;
-                SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(value);
+                Kernel32.SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(value);
                 UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), NativeMethods.DTM_SETSYSTEMTIME, gdt, sys);
             }
 
@@ -1450,7 +1448,7 @@ namespace System.Windows.Forms
                 NativeMethods.SYSTEMTIMEARRAY sa = new NativeMethods.SYSTEMTIMEARRAY();
 
                 flags |= NativeMethods.GDTR_MIN | NativeMethods.GDTR_MAX;
-                SYSTEMTIME sys = DateTimeToSysTime(min);
+                Kernel32.SYSTEMTIME sys = DateTimeToSysTime(min);
                 sa.wYear1 = sys.wYear;
                 sa.wMonth1 = sys.wMonth;
                 sa.wDayOfWeek1 = sys.wDayOfWeek;
@@ -1747,9 +1745,9 @@ namespace System.Windows.Forms
         ///  Takes a DateTime value and returns a SYSTEMTIME struct
         ///  Note: 1 second granularity
         /// </summary>
-        internal static SYSTEMTIME DateTimeToSysTime(DateTime time)
+        internal static Kernel32.SYSTEMTIME DateTimeToSysTime(DateTime time)
         {
-            SYSTEMTIME sys = new SYSTEMTIME
+            Kernel32.SYSTEMTIME sys = new Kernel32.SYSTEMTIME
             {
                 wYear = (short)time.Year,
                 wMonth = (short)time.Month,
@@ -1767,7 +1765,7 @@ namespace System.Windows.Forms
         ///  Takes a SYSTEMTIME struct and returns a DateTime value
         ///  Note: 1 second granularity.
         /// </summary>
-        internal static DateTime SysTimeToDateTime(SYSTEMTIME s)
+        internal static DateTime SysTimeToDateTime(Kernel32.SYSTEMTIME s)
         {
             return new DateTime(s.wYear, s.wMonth, s.wDay, s.wHour, s.wMinute, s.wSecond);
         }

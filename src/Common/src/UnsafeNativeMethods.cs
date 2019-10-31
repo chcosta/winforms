@@ -571,7 +571,7 @@ namespace System.Windows.Forms
         public static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, ref Interop.ComCtl32.MCHITTESTINFO lParam);
 
         [DllImport(ExternDll.User32, CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, Interop.SYSTEMTIME lParam);
+        public static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, Interop.Kernel32.SYSTEMTIME lParam);
 
         [DllImport(ExternDll.User32, CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(HandleRef hWnd, int msg, int wParam, NativeMethods.SYSTEMTIMEARRAY lParam);
@@ -611,12 +611,6 @@ namespace System.Windows.Forms
 
         [DllImport(ExternDll.User32, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         public static extern IntPtr SendMessageTimeout(HandleRef hWnd, int msg, IntPtr wParam, IntPtr lParam, int flags, int timeout, out IntPtr pdwResult);
-
-        [DllImport(ExternDll.User32, CharSet = CharSet.Auto)]
-        public extern static IntPtr SendMessage(HandleRef hWnd, int Msg, int wParam, [In, Out] ref Interop.ComCtl32.MCGRIDINFO gridInfo);
-
-        [DllImport(ExternDll.User32, CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessageTimeout(HandleRef hWnd, int msg, IntPtr wParam, [In, Out] ref Interop.ComCtl32.MCGRIDINFO gridInfo, int flags, int timeout, out IntPtr pdwResult);
 
         public const int SMTO_ABORTIFHUNG = 0x0002;
 

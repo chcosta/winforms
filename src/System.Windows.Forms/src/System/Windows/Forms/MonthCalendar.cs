@@ -1058,7 +1058,7 @@ namespace System.Windows.Forms
 
                 if (IsHandleCreated)
                 {
-                    SYSTEMTIME st = new SYSTEMTIME();
+                    Kernel32.SYSTEMTIME st = new Kernel32.SYSTEMTIME();
                     int res = (int)UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), (int)ComCtl32.MCM.GETTODAY, 0, st);
                     Debug.Assert(res != 0, "MCM_GETTODAY failed");
                     return DateTimePicker.SysTimeToDateTime(st).Date;
@@ -1511,7 +1511,7 @@ namespace System.Windows.Forms
             SelectionRange range = new SelectionRange();
             UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), (int)ComCtl32.MCM.GETMONTHRANGE, flag, sa);
 
-            SYSTEMTIME st = new SYSTEMTIME
+            Kernel32.SYSTEMTIME st = new Kernel32.SYSTEMTIME
             {
                 wYear = sa.wYear1,
                 wMonth = sa.wMonth1,
@@ -1562,7 +1562,7 @@ namespace System.Windows.Forms
                     x = x,
                     y = y
                 },
-                st = new SYSTEMTIME(),
+                st = new Kernel32.SYSTEMTIME(),
                 cbSize = Marshal.SizeOf<ComCtl32.MCHITTESTINFO>()
             };
             UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), (int)ComCtl32.MCM.HITTEST, 0, ref mchi);
@@ -1572,7 +1572,7 @@ namespace System.Windows.Forms
             HitArea hitArea = GetHitArea(mchi.uHit);
             if (HitTestInfo.HitAreaHasValidDateTime(hitArea))
             {
-                SYSTEMTIME sys = new SYSTEMTIME
+                Kernel32.SYSTEMTIME sys = new Kernel32.SYSTEMTIME
                 {
                     wYear = mchi.st.wYear,
                     wMonth = mchi.st.wMonth,
@@ -1636,7 +1636,7 @@ namespace System.Windows.Forms
 
             if (todayDateSet)
             {
-                SYSTEMTIME st = DateTimePicker.DateTimeToSysTime(todayDate);
+                Kernel32.SYSTEMTIME st = DateTimePicker.DateTimeToSysTime(todayDate);
                 UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), (int)ComCtl32.MCM.SETTODAY, 0, st);
             }
 
@@ -1962,8 +1962,8 @@ namespace System.Windows.Forms
         ///  Sends a Win32 message to this control.  If the control does not yet
         ///  have a handle, it will be created.
         /// </summary>
-        internal IntPtr SendMessage(int msg, int wparam, ref Interop.ComCtl32.MCGRIDINFO lparam) =>
-            UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), msg, wparam, ref lparam);
+        internal IntPtr SendMessage(int msg, int wparam, ref ComCtl32.MCGRIDINFO lparam) =>
+            Interop.ComCtl32.SendMessage(new HandleRef(this, Handle), msg, wparam, ref lparam);
 
         /// <summary>
         ///  Overrides Control.SetBoundsCore to enforce auto-sizing.
@@ -2047,7 +2047,7 @@ namespace System.Windows.Forms
 
                 NativeMethods.SYSTEMTIMEARRAY sa = new NativeMethods.SYSTEMTIMEARRAY();
                 flag |= NativeMethods.GDTR_MIN | NativeMethods.GDTR_MAX;
-                SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(minDate);
+                Kernel32.SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(minDate);
                 sa.wYear1 = sys.wYear;
                 sa.wMonth1 = sys.wMonth;
                 sa.wDayOfWeek1 = sys.wDayOfWeek;
@@ -2200,7 +2200,7 @@ namespace System.Windows.Forms
             {
                 NativeMethods.SYSTEMTIMEARRAY sa = new NativeMethods.SYSTEMTIMEARRAY();
 
-                SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(lower);
+                Kernel32.SYSTEMTIME sys = DateTimePicker.DateTimeToSysTime(lower);
                 sa.wYear1 = sys.wYear;
                 sa.wMonth1 = sys.wMonth;
                 sa.wDayOfWeek1 = sys.wDayOfWeek;
@@ -2313,12 +2313,16 @@ namespace System.Windows.Forms
         {
             if (IsHandleCreated)
             {
-                SYSTEMTIME st = null;
+
                 if (todayDateSet)
                 {
-                    st = DateTimePicker.DateTimeToSysTime(todayDate);
+                    Kernel32.SYSTEMTIME st = DateTimePicker.DateTimeToSysTime(todayDate);
+                    UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), (int)ComCtl32.MCM.SETTODAY, 0, st);
                 }
-                UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), (int)ComCtl32.MCM.SETTODAY, 0, st);
+                else
+                {
+                    UnsafeNativeMethods.SendMessage(new HandleRef(this, Handle), (int)ComCtl32.MCM.SETTODAY, 0, IntPtr.Zero);
+                }
             }
         }
 

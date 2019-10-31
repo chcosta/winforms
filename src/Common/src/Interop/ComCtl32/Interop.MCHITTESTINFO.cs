@@ -17,7 +17,7 @@ internal static partial class Interop
             public int cbSize;
             public POINT pt;
             public int uHit;
-            public SYSTEMTIME st;
+            public Kernel32.SYSTEMTIME st;
             public RECT rc;
             public int iOffset;
             public int iRow;

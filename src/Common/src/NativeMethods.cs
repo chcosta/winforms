@@ -3695,15 +3695,15 @@ namespace System.Windows.Forms
         public class NMSELCHANGE
         {
             public NMHDR nmhdr;
-            public Interop.SYSTEMTIME stSelStart = null;
-            public Interop.SYSTEMTIME stSelEnd = null;
+            public Interop.Kernel32.SYSTEMTIME stSelStart;
+            public Interop.Kernel32.SYSTEMTIME stSelEnd;
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         public class NMDAYSTATE
         {
             public NMHDR nmhdr;
-            public Interop.SYSTEMTIME stStart = null;
+            public Interop.Kernel32.SYSTEMTIME stStart;
             public int cDayState = 0;
             public IntPtr prgDayState;
         }
@@ -3962,7 +3962,7 @@ namespace System.Windows.Forms
         {
             public NMHDR nmhdr;
             public int dwFlags = 0;
-            public Interop.SYSTEMTIME st = null;
+            public Interop.Kernel32.SYSTEMTIME st;
         }
 
         [StructLayout(LayoutKind.Sequential)]
